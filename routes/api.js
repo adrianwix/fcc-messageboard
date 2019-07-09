@@ -15,7 +15,7 @@ const mongoose = require("mongoose");
 /* eslint-disable no-console */
 mongoose.connect(
 	process.env.DB,
-	function(err) {
+	function (err) {
 		if (err) {
 			console.log(err);
 		} else {
@@ -24,7 +24,7 @@ mongoose.connect(
 	}
 );
 
-module.exports = function(app) {
+module.exports = function (app) {
 	app
 		.route("/api/threads/:board")
 		.get(async (req, res) => {
@@ -58,7 +58,7 @@ module.exports = function(app) {
 			const updatedThread = await newThread
 				.save()
 				.catch(err => res.status(404).json(err));
-			if (process.env.NODE_ENV === "testing") {
+			if (process.env.NODE_ENV === "test") {
 				return res.json(updatedThread);
 			} else {
 				return res.redirect("/b/general/");

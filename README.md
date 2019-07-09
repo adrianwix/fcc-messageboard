@@ -9,3 +9,4 @@ Project Anon Message Board
 4) You will create all of the functional/unit tests in `tests/2_functional-tests.js` and `tests/1_unit-tests.js` but only functional will be tested
 
 
+Run `npm start` to launch the server and the tests

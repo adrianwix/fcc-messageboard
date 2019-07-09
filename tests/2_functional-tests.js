@@ -16,7 +16,7 @@ var Thread = require("../models/Thread.js");
 
 chai.use(chaiHttp);
 /*eslint-disable no-undef, no-console*/
-suite("Functional Tests", function() {
+suite("Functional Tests", function () {
 	let thread_id;
 	before(() => {
 		return new Promise((resolve, reject) => {
@@ -27,14 +27,14 @@ suite("Functional Tests", function() {
 				.catch(err => reject(err));
 		});
 	});
-	suite("API ROUTING FOR /api/threads/:board", function() {
-		suite("POST", function() {
-			test("Create a thread", function(done) {
+	suite("API ROUTING FOR /api/threads/:board", function () {
+		suite("POST", function () {
+			test("Create a thread", function (done) {
 				chai
 					.request(server)
 					.post("/api/threads/general")
 					.send({ text: "Mocha test", delete_password: "123" })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						let data = res.body;
 						// Save Thread Id in a "global" variable
 						thread_id = data._id;
@@ -58,12 +58,12 @@ suite("Functional Tests", function() {
 			});
 		});
 
-		suite("GET", function() {
-			test("Get array of threads", function(done) {
+		suite("GET", function () {
+			test("Get array of threads", function (done) {
 				chai
 					.request(server)
 					.get("/api/threads/general")
-					.end(function(err, res) {
+					.end(function (err, res) {
 						let data = res.body[0];
 						assert.equal(res.status, 200);
 						assert.equal(data.text, "Mocha test");
@@ -83,13 +83,13 @@ suite("Functional Tests", function() {
 			});
 		});
 
-		suite("DELETE", function() {
-			test("Delete thread", function(done) {
+		suite("DELETE", function () {
+			test("Delete thread", function (done) {
 				chai
 					.request(server)
 					.delete("/api/threads/general")
 					.send({ thread_id, delete_password: "123" })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.text, "success");
 						if (err) {
@@ -98,7 +98,7 @@ suite("Functional Tests", function() {
 						chai
 							.request(server)
 							.get("/api/threads/general")
-							.end(function(err, res) {
+							.end(function (err, res) {
 								assert.equal(res.status, 200);
 								assert.equal(res.body[0].text, "[deleted]");
 								done();
@@ -107,13 +107,13 @@ suite("Functional Tests", function() {
 			});
 		});
 
-		suite("PUT", function() {
-			test("Report thread", function(done) {
+		suite("PUT", function () {
+			test("Report thread", function (done) {
 				chai
 					.request(server)
 					.put("/api/threads/general")
 					.send({ report_id: thread_id })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.text, "success");
 						if (err) {
@@ -125,15 +125,15 @@ suite("Functional Tests", function() {
 		});
 	});
 
-	suite("API ROUTING FOR /api/replies/:board", function() {
+	suite("API ROUTING FOR /api/replies/:board", function () {
 		let reply_id;
-		suite("POST", function() {
-			test("Create reply to a thread", function(done) {
+		suite("POST", function () {
+			test("Create reply to a thread", function (done) {
 				chai
 					.request(server)
 					.post("/api/replies/general")
 					.send({ text: "Mocha Reply Test", delete_password: "123", thread_id })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						let data = res.body.replies[0];
 						assert.equal(res.status, 200);
 						assert.isArray(res.body.replies);
@@ -156,13 +156,13 @@ suite("Functional Tests", function() {
 			});
 		});
 
-		suite("GET", function() {
-			test("Get one thread with its replies", function(done) {
+		suite("GET", function () {
+			test("Get one thread with its replies", function (done) {
 				chai
 					.request(server)
 					.get("/api/replies/general")
 					.query({ thread_id })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						let data = res.body;
 						assert.equal(res.status, 200);
 						assert.equal(data.text, "[deleted]");
@@ -188,13 +188,13 @@ suite("Functional Tests", function() {
 			});
 		});
 
-		suite("PUT", function() {
-			test("Report reply", function(done) {
+		suite("PUT", function () {
+			test("Report reply", function (done) {
 				chai
 					.request(server)
 					.put("/api/replies/general")
 					.send({ thread_id, reply_id })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.body.replies[0].reported, true);
 						if (err) {
@@ -205,13 +205,13 @@ suite("Functional Tests", function() {
 			});
 		});
 
-		suite("DELETE", function() {
-			test("Delete a reply", function(done) {
+		suite("DELETE", function () {
+			test("Delete a reply", function (done) {
 				chai
 					.request(server)
 					.delete("/api/replies/general")
 					.send({ thread_id, reply_id, delete_password: "123" })
-					.end(function(err, res) {
+					.end(function (err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.body.replies[0].text, "[deleted]");
 						if (err) {
